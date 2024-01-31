@@ -1,5 +1,5 @@
 package com.myTask.taskapp.enums;
 
 public enum Role {
-    ADMIN, APP_USER
+    ADMIN, APP_USER, EMPLOYEE
 }
