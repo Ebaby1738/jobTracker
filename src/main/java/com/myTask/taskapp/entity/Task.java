@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +24,8 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String taskName;
 
     private String description;
 
@@ -47,9 +47,17 @@ public class Task {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedDate;
 
+
+
+    @ManyToOne
+    @JoinColumn(name = "delivery_man_id")
+    @JsonIgnore
+    private Employer employer;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    private Employee username;
+    private Employee employee;
 
+    private String username;
 }

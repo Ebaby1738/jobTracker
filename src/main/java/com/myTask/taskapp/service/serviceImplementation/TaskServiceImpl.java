@@ -153,4 +153,29 @@ public class TaskServiceImpl implements TaskService {
         throw new UserExistException("Only authorized personnels can access this functionality.");
     }
 
+
+    /*public void assignTaskToEmployee(Long taskId, Long employeeId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+
+        // Check if the task is pending or any other business logic validations
+        task.setEmployeeId(employeeId);
+        taskRepository.save(task);
+
+        // Notify the employee about the assigned task
+        messagingTemplate.convertAndSendToUser(employeeId.toString(), "/topic/task", "You have a new task assigned.");
+    }
+
+    public void updateTaskStatus(Long taskId, String status) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+
+        // Check if the task status transition is valid, handle any other business logic validations
+        task.setStatus(status);
+        taskRepository.save(task);
+
+        // Notify the employer about the task status update
+        messagingTemplate.convertAndSendToUser(task.getEmployerId().toString(), "/topic/task", "Task status updated.");
+    }*/
+
 }
