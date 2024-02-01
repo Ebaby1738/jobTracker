@@ -9,13 +9,16 @@ import java.util.List;
 
 public interface TaskService {
 
+
     ApiResponse<Task> createTask(TaskRequest request, String email);
 
     ApiResponse<Task> updateTask(Long taskId, TaskRequest request, String email);
 
-    ApiResponse<List<TaskResponse>> getAllTaskByUser(String email);
+    ApiResponse<TaskResponse> assignTaskToEmployee(String email, Long taskId, TaskRequest request);
 
-    ApiResponse<TaskResponse> getTaskByUser(String email, Long taskId);
+    ApiResponse<List<TaskResponse>> getAllTaskByEmployer(String email);
+
+    ApiResponse<List<TaskResponse>> getAllAssignedTaskByEmployee(String email);
 
     ApiResponse<String> deleteTask(Long taskId, String userEmail);
 }

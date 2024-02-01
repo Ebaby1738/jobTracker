@@ -52,12 +52,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "delivery_man_id")
     @JsonIgnore
-    private Employer employer;
+    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private Employee employee;
+    private String EmployeeUsername;
 
-    private String username;
+
+
 }

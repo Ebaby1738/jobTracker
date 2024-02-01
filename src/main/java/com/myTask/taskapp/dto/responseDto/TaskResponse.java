@@ -3,6 +3,7 @@ package com.myTask.taskapp.dto.responseDto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -15,5 +16,7 @@ public class TaskResponse {
 
     private String name;
     private String description;
-    private String dueDate;
+
+    private LocalDateTime dueDate;
+    private String employeeUsername;
 }

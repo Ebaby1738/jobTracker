@@ -37,13 +37,14 @@ public class TaskController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/assign-order-to-deliveryman")
-    public ResponseEntity<ApiResponse<EmployerResponseDto>> assignTaskToEmployee
-            ( @RequestBody EmployerRequestDto request,
+    @PostMapping("/assign-order-to-deliveryman/{taskId}")
+    public ResponseEntity<ApiResponse<TaskResponse>> assignTaskToEmployee
+            (@RequestBody TaskRequest request,
+             @PathVariable Long taskId,
               @RequestHeader("Authorization") String authorizationHeader) throws CommonApplicationException {
         var userDetails= jwtService.validateTokenAndReturnDetail(authorizationHeader.substring(7));
         log.info("Employer with ID:: " + userDetails.get("email")+" wants to assign task to a user");
-        ApiResponse<EmployerResponseDto> response = taskService.assignTaskToEmployee(userDetails.get("email"), request);
+        ApiResponse<TaskResponse> response = taskService.assignTaskToEmployee(userDetails.get("email"), taskId, request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -61,18 +62,6 @@ public class TaskController {
     }
 
 
-
-    @GetMapping("/get-tasks/")
-    public ResponseEntity<ApiResponse<List<TaskResponse>>> getAllTask(@RequestHeader("Authorization") String authorizationHeader)
-            throws CommonApplicationException {
-        log.info("Received request with Authorization Header: {}", authorizationHeader);
-        var userDetails=jwtService.validateTokenAndReturnDetail(authorizationHeader.substring(7));
-        log.info("Request for employer {} to get all created tasks", userDetails.get("name"));
-        String userEmail = userDetails.get("email");
-        ApiResponse<List<TaskResponse>> taskList = taskService.getAllTaskByEmployer(userEmail);
-        return new ResponseEntity<>(taskList, HttpStatus.OK);
-    }
-
     @GetMapping("/get-tasks/")
     public ResponseEntity<ApiResponse<List<TaskResponse>>> getAllTaskByEmployee(@RequestHeader("Authorization") String authorizationHeader)
             throws CommonApplicationException {
@@ -80,7 +69,7 @@ public class TaskController {
         var userDetails=jwtService.validateTokenAndReturnDetail(authorizationHeader.substring(7));
         log.info("Request for user {} to get all created tasks", userDetails.get("name"));
         String userEmail = userDetails.get("email");
-        ApiResponse<List<TaskResponse>> taskList = taskService.getAllTaskByUser(userEmail);
+        ApiResponse<List<TaskResponse>> taskList = taskService.getAllAssignedTaskByEmployee(userEmail);
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
@@ -91,13 +80,13 @@ public class TaskController {
         var userDetails=jwtService.validateTokenAndReturnDetail(authorizationHeader.substring(7));
         log.info("Request for user {} to get all created tasks", userDetails.get("name"));
         String userEmail = userDetails.get("email");
-        ApiResponse<List<TaskResponse>> taskList = taskService.getAllTaskByUser(userEmail);
+        ApiResponse<List<TaskResponse>> taskList = taskService.getAllTaskByEmployer(userEmail);
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
 
 
 
-    @GetMapping("/get-task/{taskId}")
+    /*@GetMapping("/get-task/{taskId}")
     public ResponseEntity<ApiResponse<TaskResponse>> getTask(@RequestHeader("Authorization") String authorizationHeader,
                                                              @PathVariable Long taskId)
             throws CommonApplicationException {
@@ -107,7 +96,7 @@ public class TaskController {
         String userEmail = userDetails.get("email");
         ApiResponse<TaskResponse> task = taskService.getTaskByUser(userEmail, taskId);
         return new ResponseEntity<>(task, HttpStatus.OK);
-    }
+    }*/
 
 
 
@@ -138,5 +127,16 @@ public class TaskController {
     }
 
 
+
+    /*@GetMapping("/get-tasks/")
+    public ResponseEntity<ApiResponse<List<TaskResponse>>> getAllTask(@RequestHeader("Authorization") String authorizationHeader)
+            throws CommonApplicationException {
+        log.info("Received request with Authorization Header: {}", authorizationHeader);
+        var userDetails=jwtService.validateTokenAndReturnDetail(authorizationHeader.substring(7));
+        log.info("Request for employer {} to get all created tasks", userDetails.get("name"));
+        String userEmail = userDetails.get("email");
+        ApiResponse<List<TaskResponse>> taskList = taskService.getAllTaskByEmployer(userEmail);
+        return new ResponseEntity<>(taskList, HttpStatus.OK);
+    }*/
 
 }
